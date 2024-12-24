@@ -87,7 +87,8 @@ install_packages() {
         catnap \
         btop \
         cava \
-        quich
+        quich \
+        gthumb
 
     # Browser
     log "Installing browser..."
