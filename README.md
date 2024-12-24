@@ -47,6 +47,7 @@ cd archi
 
 2. Запустите скрипт установки:
 ```bash
+sudo chmod +x install.sh
 sudo ./install.sh
 ```
 
