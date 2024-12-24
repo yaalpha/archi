@@ -34,8 +34,8 @@
 
 1. Клонируйте репозиторий:
 ```bash
-git clone https://github.com/pilk-dev/arch-hyprland-setup.git
-cd arch-hyprland-setup
+git clone https://github.com/yaalpha/archi.git
+cd archi
 ```
 
 2. Запустите скрипт установки:
