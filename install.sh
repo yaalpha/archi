@@ -138,6 +138,16 @@ install_oh_my_zsh() {
     fi
 }
 
+copy_with_backup() {
+    local src=$1
+    local dest=$2
+    if [ -e "$dest" ]; then
+        echo "Backing up existing $(basename "$dest") to $BACKUP_DIR"
+        mv "$dest" "$BACKUP_DIR"
+    fi
+    cp -rf "$src" "$dest"
+}
+
 # Config files installation function
 install_configs() {
     log "Installing configuration files..."
@@ -146,10 +156,13 @@ install_configs() {
     SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     
     # Copy configuration files
-    cp -rf "$SCRIPT_DIR/.config/" "$HOME/.config/"
-    cp -f "$SCRIPT_DIR/.zshrc" "$HOME/.zshrc"
-    cp -rf "$SCRIPT_DIR/wallpaper" "$HOME/wallpaper"
-    cp -rf "$SCRIPT_DIR/.themes/" "$HOME/.themes/"
+    BACKUP_DIR="$HOME/backup_$(date +%Y%m%d_%H%M%S)"
+    mkdir -p "$BACKUP_DIR"
+
+    copy_with_backup "$SCRIPT_DIR/.config/" "$HOME/.config/"
+    copy_with_backup "$SCRIPT_DIR/.zshrc" "$HOME/.zshrc"
+    copy_with_backup "$SCRIPT_DIR/wallpaper" "$HOME/wallpaper"
+    copy_with_backup "$SCRIPT_DIR/.themes/" "$HOME/.themes/"
     
     log "Configuration files installed"
 }
