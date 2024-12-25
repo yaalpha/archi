@@ -85,8 +85,7 @@ yay -S --noconfirm \
     ttf-font-awesome \
     ttf-iosevka-nerd \
     adobe-source-sans-fonts \
-    ttf-droid-sans-mono \
-    ttf-monospace
+    ttf-space-mono-nerd
 
 # Update font cache
 sudo fc-cache -fv
