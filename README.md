@@ -48,7 +48,7 @@ cd archi
 2. Запустите скрипт установки:
 ```bash
 sudo chmod +x install.sh
-sudo ./install.sh
+./install.sh
 ```
 
 3. После завершения установки система автоматически перезагрузится
