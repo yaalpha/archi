@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# Check for root privileges
-if [ "$EUID" -ne 0 ]; then 
-    echo "Please run script as root"
-    exit 1
-fi
-
 # Logging function
 log() {
     echo "==> $1"
@@ -18,10 +12,10 @@ enable_multilib() {
     # Check if multilib is already uncommented
     if grep -q "^#\[multilib\]" /etc/pacman.conf; then
         # Uncomment [multilib] and Include
-        sed -i '/^#\[multilib\]/,/^#Include/ s/^#//' /etc/pacman.conf
+        sudo sed -i '/^#\[multilib\]/,/^#Include/ s/^#//' /etc/pacman.conf
         
         # Update package databases
-        pacman -Sy --noconfirm
+        sudo pacman -Sy --noconfirm
         
         log "Multilib repository enabled"
     else
@@ -122,8 +116,8 @@ install_packages() {
 
     # Enable NetworkManager
     log "Activating NetworkManager..."
-    systemctl enable NetworkManager
-    systemctl start NetworkManager
+    sudo systemctl enable NetworkManager
+    sudo systemctl start NetworkManager
 }
 
 # Oh My Zsh installation function
@@ -136,7 +130,7 @@ install_oh_my_zsh() {
         sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
         
         # Set zsh as default shell
-        chsh -s $(which zsh) $USER
+        sudo chsh -s $(which zsh) $USER
         
         log "Oh My Zsh successfully installed"
     else
@@ -149,7 +143,7 @@ install_configs() {
     log "Installing configuration files..."
     
     # Get script directory
-    SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     
     # Copy configuration files
     cp -rf "$SCRIPT_DIR/.config/" "$HOME/.config/"
@@ -174,7 +168,7 @@ install_nerd_fonts() {
         nerd-fonts-meta
     
     # Update font cache
-    fc-cache -fv
+    sudo fc-cache -fv
     
     log "Nerd Fonts installed"
 }
