@@ -6,6 +6,26 @@ set -e
 # Get the current script directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# Copy configuration files
+echo "Copying configuration files..."
+BACKUP_DIR="$HOME/backup_$(date +%Y%m%d_%H%M%S)"
+mkdir -p "$BACKUP_DIR"
+
+copy_with_backup() {
+    local src=$1
+    local dest=$2
+    if [ -e "$dest" ]; then
+        echo "Creating backup of $dest to $BACKUP_DIR"
+        mv "$dest" "$BACKUP_DIR"
+    fi
+    cp -rf "$src" "$dest"
+}
+
+copy_with_backup "$SCRIPT_DIR/.config/" "$HOME/.config/"
+copy_with_backup "$SCRIPT_DIR/.zshrc" "$HOME/.zshrc"
+copy_with_backup "$SCRIPT_DIR/wallpaper" "$HOME/wallpaper"
+copy_with_backup "$SCRIPT_DIR/.themes/" "$HOME/.themes/"
+
 # Enable multilib repository
 if ! grep -q '^\[multilib\]' /etc/pacman.conf; then
     echo "Enabling multilib repository..."
@@ -95,26 +115,6 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
     echo "Installing Oh My Zsh..."
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
-
-# Copy configuration files
-echo "Copying configuration files..."
-BACKUP_DIR="$HOME/backup_$(date +%Y%m%d_%H%M%S)"
-mkdir -p "$BACKUP_DIR"
-
-copy_with_backup() {
-    local src=$1
-    local dest=$2
-    if [ -e "$dest" ]; then
-        echo "Creating backup of $dest to $BACKUP_DIR"
-        mv "$dest" "$BACKUP_DIR"
-    fi
-    cp -rf "$src" "$dest"
-}
-
-copy_with_backup "$SCRIPT_DIR/.config/" "$HOME/.config/"
-copy_with_backup "$SCRIPT_DIR/.zshrc" "$HOME/.zshrc"
-copy_with_backup "$SCRIPT_DIR/wallpaper" "$HOME/wallpaper"
-copy_with_backup "$SCRIPT_DIR/.themes/" "$HOME/.themes/"
 
 echo "Installation completed! Press Enter to reboot..."
 read
