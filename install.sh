@@ -91,6 +91,8 @@ yay -S --noconfirm \
 # Install fonts
 echo "Installing fonts..."
 yay -S --noconfirm \
+    ttf-dejavu \
+    ttf-material-symbols-variable-git \
     ttf-jetbrains-mono-nerd \
     ttf-firacode-nerd \
     ttf-hack-nerd \
